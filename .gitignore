@@ -1,0 +1,11 @@
+# Put file and folder names here for
+#  info you DON'T want on GitHub
+
+# api_keys
+keys.py
+
+# local database
+database
+
+# Python virtual environment folder
+env
