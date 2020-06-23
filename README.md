@@ -1,6 +1,6 @@
 # Home Automation Application
 
-Description:
+Description: Home automation app that will use APIs to gather data and will use databases to create tasks.
 
 ## Current Features
 
