@@ -6,7 +6,7 @@ class Weather():
     def __init__(self):
         self.today = {}
         self.tomorrow = {}
-        # p2 = plus 2
+        # p2 = plus2, p3 = plus3 offset
         self.today_p2 = {}
         self.today_p3 = {}
         self.date = date.today()
@@ -17,7 +17,7 @@ class Weather():
         return self.organize_data(response, response.json()["list"])
     
     def organize_data(self, response, data):
-        temp, weather, wind_speed = 'null', 'null', 'null'
+        #temp, weather, wind_speed = 'null', 'null', 'null'
 
         ## weather_data_total - 1 is the 40th day in 5day/3hr 
         if response.ok:
@@ -27,9 +27,29 @@ class Weather():
             weather = response.json()["list"][weather_data_total - 1]["weather"][0]["main"]
             wind_speed = response.json()["list"][weather_data_total - 1]["wind"]["speed"]
         
+        #print(response.json()["list"])
+
         for data_point in data:
-            convert = datetime.fromtimestamp(dt).strftime("%A, %B %d, %Y %I:%M:%S")
-            print(convert)
+            #convert = datetime.fromtimestamp(dt).strftime("%A, %B %d, %Y %I:%M:%S")
+            convert_time = datetime.strptime(data_point['dt_txt'], '%Y-%m-%d %H:%M:%S')
+            date = convert_time.date()
+            time = convert_time.time()
+            print(date)
+            print(time)
+
+            if time == self.time:
+                if date == self.date:
+                    self.today['temp'] = data_point['main']['temp']
+                    self.weather['weather'] = data_point['weather'][0['main']
+                    self.today['wind'] = data_point['wind']['speed']
+                if date == (self.date + timedelta(days = 1)):
+                    self.tomorrow['temp'] = data_point['main']['temp']
+                    self.weather['weather'] = data_point['weather'][0['main']
+                    self.today['wind'] = data_point['wind']['speed']
+                if date == (self.date + timedelta(days = 2)):
+                    self.today['temp'] = data_point['main']['temp']
+                    self.weather['weather'] = data_point['weather'][0['main']
+                    self.today['wind'] = data_point['wind']['speed']
 
 if __name__ == "__main__":
     weather = Weather()
