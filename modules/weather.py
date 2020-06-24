@@ -19,13 +19,14 @@ class Weather():
     def organize_data(self, response, data):
         #temp, weather, wind_speed = 'null', 'null', 'null'
 
-        ## weather_data_total - 1 is the 40th day in 5day/3hr 
-        if response.ok:
-            weather_data_total = len(response.json()["list"])
-            dt = response.json()["list"][0]["dt"]
-            temp = response.json()["list"][weather_data_total - 1]["main"]["temp"]
-            weather = response.json()["list"][weather_data_total - 1]["weather"][0]["main"]
-            wind_speed = response.json()["list"][weather_data_total - 1]["wind"]["speed"]
+        ### .ok means true if it returns 200
+        ### weather_data_total - 1 is the 40th day in 5day/3hr 
+        # if response.ok:
+        #     weather_data_total = len(response.json()["list"])
+        #     dt = response.json()["list"][0]["dt"]
+        #     temp = response.json()["list"][weather_data_total - 1]["main"]["temp"]
+        #     weather = response.json()["list"][weather_data_total - 1]["weather"][0]["main"]
+        #     wind_speed = response.json()["list"][weather_data_total - 1]["wind"]["speed"]
         
         #print(response.json()["list"])
 
@@ -34,23 +35,29 @@ class Weather():
             convert_time = datetime.strptime(data_point['dt_txt'], '%Y-%m-%d %H:%M:%S')
             date = convert_time.date()
             time = convert_time.time()
-            print(date)
-            print(time)
+            # print(date)
+            # print(time)
 
             if time == self.time:
                 if date == self.date:
                     self.today['temp'] = data_point['main']['temp']
-                    self.weather['weather'] = data_point['weather'][0['main']
+                    self.today['weather'] = data_point['weather'][0]['main']
                     self.today['wind'] = data_point['wind']['speed']
                 if date == (self.date + timedelta(days = 1)):
                     self.tomorrow['temp'] = data_point['main']['temp']
-                    self.weather['weather'] = data_point['weather'][0['main']
-                    self.today['wind'] = data_point['wind']['speed']
+                    self.tomorrow['weather'] = data_point['weather'][0]['main']
+                    self.tomorrow['wind'] = data_point['wind']['speed']
                 if date == (self.date + timedelta(days = 2)):
-                    self.today['temp'] = data_point['main']['temp']
-                    self.weather['weather'] = data_point['weather'][0['main']
-                    self.today['wind'] = data_point['wind']['speed']
+                    self.today_p2['temp'] = data_point['main']['temp']
+                    self.today_p2['weather'] = data_point['weather'][0]['main']
+                    self.today_p2['wind'] = data_point['wind']['speed']
+                if date == (self.date + timedelta(days = 3)):
+                    self.today_p3['temp'] = data_point['main']['temp']
+                    self.today_p3['weather'] = data_point['weather'][0]['main']
+                    self.today_p3['wind'] = data_point['wind']['speed']
+
+        return self.today, self.tomorrow, self.today_p2, self.today_p3
 
 if __name__ == "__main__":
     weather = Weather()
-    weather.get_data(weather_key, city, state)
+    print(weather.get_data(weather_key, city, state))
