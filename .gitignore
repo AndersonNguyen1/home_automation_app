@@ -3,6 +3,7 @@
 
 # api_keys
 keys.py
+credentials.json
 
 # local database
 database
