@@ -16,14 +16,12 @@ class GoogleCalendar:
         # If modifying these scopes, delete the file token.pickle.
         SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 
-        """Shows basic usage of the Google Calendar API.
-        Prints the start and name of the next 2 events on the user's calendar.
+        """ Prints the start and name of the next 2 events on the user's calendar.
         """
         creds = None
         # The file token.pickle stores the user's access and refresh tokens, and is
         # created automatically when the authorization flow completes for the first
-        # time.
-        # checks if the token is there, otherwise i'll make us sign in
+        # time. Checks if the token is there, otherwise i'll make us sign in.
         if os.path.exists('token.pickle'):
             with open('token.pickle', 'rb') as token:
                 creds = pickle.load(token)
@@ -50,14 +48,25 @@ class GoogleCalendar:
 
         if not events:
             return('No upcoming events found.')
-        else:
-            self.set_data(events)
+        return self.set_data(events)
 
     def set_data(self, events):
         for event in events:
-            start = event['start'].get('dateTime', event['start'].get('date'))
-            print(start, event['summary'])
+            if not self.event1:
+                self.event1['summary'] = event['summary']
+                self.event1['start'] = event['start'].get('dateTime', event['start'].get('date'))
+                self.event1['end'] = event['end'].get('dateTime', event['end'].get('date'))
+                if 'location' in event.keys():
+                    self.event1['location'] = event['location']
+            else:
+                self.event2['summary'] = event['summary']
+                self.event2['start'] = event['start'].get('dateTime', event['start'].get('date'))
+                self.event2['end'] = event['end'].get('dateTime', event['end'].get('date'))
+                if 'location' in event.keys():
+                    self.event2['location'] = event['location']
+        #print(event)
+        return self.event1, self.event2
 
 if __name__ == '__main__':
     calendar = GoogleCalendar()
-    calendar.gcal_connect()
+    print(calendar.gcal_connect())
